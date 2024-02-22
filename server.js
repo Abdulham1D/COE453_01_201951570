@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
+const port = 6666; 
+
+app.use(express.static('COE453_01_201951570')); 
+
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
 
 app.get('/', (req, res) => {
-    res.send('Hello World from NodeApp! docker is cool!');
-    }
-);
-
-app.listen(3000, () => {
-    console.log('Server is up on 3000');
-    }
-);
+  res.sendFile(__dirname + '/index.html');
+});

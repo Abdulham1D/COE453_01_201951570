@@ -1,10 +1,20 @@
-FROM node:latest
+# Use the official Node.js 16 image.
+# https://hub.docker.com/_/node
+FROM node:16
 
-COPY package.json /app/
-COPY server.js /app/
+# Create and change to the app directory.
+WORKDIR /usr/src/app
 
-WORKDIR /app
+# Copy application dependency manifests to the container image.
+# A wildcard is used to ensure both package.json AND package-lock.json are copied.
+# Copying this separately prevents re-running npm install on every code change.
+COPY package*.json ./
 
-RUN npm install
+# Install production dependencies.
+RUN npm install --only=production
 
-CMD ["node", "server.js"]
+# Copy local code to the container image.
+COPY . .
+
+# Service must listen to $PORT environment variable.
+CMD [ "node", "server.js" ]
